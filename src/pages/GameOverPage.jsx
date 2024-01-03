@@ -32,7 +32,14 @@ const GameOverPage = () => {
         <p>Total Rolls: {/* Add roll count from state */}</p>
       </div>
 
-      
+      <div className="actions">
+        <button onClick={() => navigate('/game')}>
+          Play Again
+        </button>
+        <button onClick={() => navigate('/')}>
+          Main Menu
+        </button>
+      </div>
     </ResultContainer>
   );
 };
