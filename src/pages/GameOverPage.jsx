@@ -29,7 +29,7 @@ const GameOverPage = () => {
       
       <div className="stats">
         <p>Final Score: {state?.winner?.score || 0}</p>
-        <p>Total Rolls: {/* Add roll count from state */}</p>
+        <p>Total Rolls: {}</p>
       </div>
 
       <div className="actions">
