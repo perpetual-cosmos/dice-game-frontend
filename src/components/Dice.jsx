@@ -1,7 +1,11 @@
 import styled, { keyframes } from 'styled-components';
 import { GiPerspectiveDiceSixFacesRandom } from 'react-icons/gi';
 
-
+const rollAnimation = keyframes`
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.2); }
+  100% { transform: rotate(360deg) scale(1); }
+`;
 
 const DiceContainer = styled.div`
   display: flex;
