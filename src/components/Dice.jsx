@@ -10,7 +10,7 @@ const rollAnimation = keyframes`
 const DiceContainer = styled.div`
   display: flex;
   gap: 2rem;
-  margin: 2rem 0;
+  margin: 2rem 0; 
 `;
 
 const Die = styled.div`
