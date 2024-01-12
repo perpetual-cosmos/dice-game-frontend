@@ -11,15 +11,7 @@ function App() {
     return () => socket.disconnect();
   }, []);
   return (
-    <SocketContext.Provider value={socket}>
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/game" element={<GamePage />} />
-        <Route path="/game-over" element={<GameOverPage />} />
-      </Routes>
-    </Router>
-    </SocketContext.Provider>
+   
   );
 }
 
