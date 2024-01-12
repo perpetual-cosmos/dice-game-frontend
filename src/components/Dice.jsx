@@ -7,7 +7,11 @@ const rollAnimation = keyframes`
   100% { transform: rotate(360deg) scale(1); }
 `;
 
-
+const DiceContainer = styled.div`
+  display: flex;
+  gap: 2rem;
+  margin: 2rem 0; 
+`;
 
 const Die = styled.div`
   font-size: 4rem;
