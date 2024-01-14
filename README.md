@@ -13,4 +13,7 @@ commands to run the game:
     npm install
     npm start
 
-  
+    Backend:
+    git clone "backend URL"
+    npm install 
+    node server.js
