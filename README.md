@@ -6,7 +6,7 @@ Game Rules
         🏆 First to 100 points wins 
 Multiplayer game : Functionality has be achieved by using socketIo
 
-commands to run the game: 
+commands to setup the Dice-game: 
     Frontend:
     git clone "URL"
     cd dice-game-frontend
