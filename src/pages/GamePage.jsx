@@ -22,7 +22,7 @@ const GameLayout = styled.div`
 
 const GamePage = () => {
   const { roomId } = useParams();
-  const navigate = useNavigate();
+  
   const socket = useContext(SocketContext);
   const [isRolling, setIsRolling] = useState(false);
   const [gameState, setGameState] = useState({
