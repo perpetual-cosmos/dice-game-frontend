@@ -45,7 +45,9 @@ const GamePage = () => {
       setGameState({ ...state, players: sortedPlayers });
     });
 
-    
+    socket.on('game-over', (winner) => {
+      navigate('/game-over', { state: { winner } });
+    });
 
     return () => {
       socket.off('game-state');
