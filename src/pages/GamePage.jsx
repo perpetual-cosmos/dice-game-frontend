@@ -62,7 +62,6 @@ const GamePage = () => {
     setTimeout(() => setIsRolling(false), 1000);
   };
 
-  // True only for the active player's client 
   const isCurrentPlayer = socket.id === gameState.currentPlayer;
 
   return (
