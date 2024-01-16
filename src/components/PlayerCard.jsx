@@ -28,7 +28,7 @@ const PlayerCard = ({ player, isCurrentPlayer }) => {
           🎲 Rolls: {player.rollCount}
         </StatItem>
         <StatItem>
-          ✨ Doubles: {player.doublesCount}
+           Doubles: {player.doublesCount}
         </StatItem>
       </div>
       {isCurrentPlayer && (
