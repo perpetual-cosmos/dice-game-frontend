@@ -6,6 +6,7 @@ import PlayerCard from '../components/PlayerCard';
 import GameControls from '../components/GameControls';
 import { SocketContext } from '../context/socket';
 
+
 const GameLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
