@@ -41,7 +41,6 @@ const GamePage = () => {
     });
 
     socket.on('game-state', (state) => {
-      // Sort players to maintain consistent order
       const sortedPlayers = [...state.players].sort((a, b) => a.id.localeCompare(b.id));
       setGameState({ ...state, players: sortedPlayers });
     });
