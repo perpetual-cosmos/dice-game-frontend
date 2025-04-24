@@ -1,5 +1,4 @@
 import styled, { keyframes } from 'styled-components';
-import { GiPerspectiveDiceSixFacesRandom } from 'react-icons/gi';
 
 const rollAnimation = keyframes`
   0% { transform: rotate(0deg) scale(1); }
@@ -10,26 +9,56 @@ const rollAnimation = keyframes`
 const DiceContainer = styled.div`
   display: flex;
   gap: 2rem;
-  margin: 2rem 0; 
+  margin: 2rem 0;
 `;
 
 const Die = styled.div`
-  font-size: 4rem;
-  color: #${props => props.color};
+  position: relative;
+  width: 4rem;
+  height: 4rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   animation: ${props => props.$isRolling ? rollAnimation : 'none'} 1s linear;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
+
+const Dot = styled.div`
+  position: absolute;
+  width: 0.8rem;
+  height: 0.8rem;
+  background-color: #${props => props.color};
+  border-radius: 50%;
+`;
+
+// Dot positions for each dice value [x, y] in percentages
+const dotPositions = {
+  1: [[50, 50]],
+  2: [[20, 20], [80, 80]],
+  3: [[20, 20], [50, 50], [80, 80]],
+  4: [[20, 20], [20, 80], [80, 20], [80, 80]],
+  5: [[20, 20], [20, 80], [80, 20], [80, 80], [50, 50]],
+  6: [[20, 20], [20, 80], [50, 20], [50, 80], [80, 20], [80, 80]],
+};
 
 const Dice = ({ values, isRolling }) => {
   return (
     <DiceContainer>
       {values.map((value, index) => (
-        <Die 
-          key={index}
-          color={index === 0 ? 'FF6B6B' : '4ECDC4'}
-          $isRolling={isRolling}
-        >
-          <GiPerspectiveDiceSixFacesRandom style={{ transform: `rotate(${value * 60}deg)` }} />
-          <span className="sr-only">Dice showing {value}</span>
+        <Die key={index} $isRolling={isRolling}>
+          {dotPositions[value]?.map(([x, y], i) => (
+            <Dot
+              key={i}
+              color={index === 0 ? 'FF6B6B' : '4ECDC4'}
+              style={{
+                left: `${x}%`,
+                top: `${y}%`,
+                transform: 'translate(-50%, -50%)'
+              }}
+            />
+          ))}
         </Die>
       ))}
     </DiceContainer>
