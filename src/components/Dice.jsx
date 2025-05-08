@@ -1,63 +1,86 @@
 import styled, { keyframes } from 'styled-components';
 
-const rollAnimation = keyframes`
-  0% { transform: rotate(0deg) scale(1); }
-  50% { transform: rotate(180deg) scale(1.2); }
-  100% { transform: rotate(360deg) scale(1); }
+const shake = keyframes`
+  0% { transform: translateX(0) rotate(0deg) scale(1); }
+  10% { transform: translateX(-8px) rotate(-10deg) scale(1.08); }
+  20% { transform: translateX(8px) rotate(10deg) scale(1.08); }
+  30% { transform: translateX(-6px) rotate(-8deg) scale(1.05); }
+  40% { transform: translateX(6px) rotate(8deg) scale(1.05); }
+  50% { transform: translateX(-4px) rotate(-6deg) scale(1.03); }
+  60% { transform: translateX(4px) rotate(6deg) scale(1.03); }
+  70% { transform: translateX(-2px) rotate(-3deg) scale(1.01); }
+  80% { transform: translateX(2px) rotate(3deg) scale(1.01); }
+  90% { transform: translateX(0) rotate(0deg) scale(1); }
+  100% { transform: translateX(0) rotate(0deg) scale(1); }
 `;
 
 const DiceContainer = styled.div`
   display: flex;
   gap: 2rem;
   margin: 2rem 0;
+  justify-content: center;
 `;
 
 const Die = styled.div`
-  position: relative;
-  width: 4rem;
-  height: 4rem;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  animation: ${props => props.$isRolling ? rollAnimation : 'none'} 1s linear;
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(145deg, #fff 70%, #f0f0f0 100%);
+  border-radius: 18px;
+  box-shadow: 0 6px 24px rgba(44, 62, 80, 0.18), 0 1.5px 4px rgba(44, 62, 80, 0.10);
+  border: 3px solid ${props => props.color};
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  position: relative;
+  animation: ${props => props.$isRolling ? shake : 'none'} 1.2s cubic-bezier(.68,-0.55,.27,1.55);
+  transition: border 0.3s;
 `;
 
 const Dot = styled.div`
-  position: absolute;
-  width: 0.8rem;
-  height: 0.8rem;
-  background-color: #${props => props.color};
+  width: 13px;
+  height: 13px;
+  background: #222;
   border-radius: 50%;
+  position: absolute;
 `;
 
-// Dot positions for each dice value [x, y] in percentages
-const dotPositions = {
-  1: [[50, 50]],
-  2: [[20, 20], [80, 80]],
-  3: [[20, 20], [50, 50], [80, 80]],
-  4: [[20, 20], [20, 80], [80, 20], [80, 80]],
-  5: [[20, 20], [20, 80], [80, 20], [80, 80], [50, 50]],
-  6: [[20, 20], [20, 80], [50, 20], [50, 80], [80, 20], [80, 80]],
+const dotPositions = [
+  [ ["center", "center"] ],
+  [ ["top-left"], ["bottom-right"] ],
+  [ ["top-left"], ["center", "center"], ["bottom-right"] ],
+  [ ["top-left"], ["top-right"], ["bottom-left"], ["bottom-right"] ],
+  [ ["top-left"], ["top-right"], ["center", "center"], ["bottom-left"], ["bottom-right"] ],
+  [ ["top-left"], ["top-right"], ["center-left"], ["center-right"], ["bottom-left"], ["bottom-right"] ],
+];
+
+const getDotStyle = (pos) => {
+  const map = {
+    "top-left": { top: '16%', left: '16%' },
+    "top-right": { top: '16%', right: '16%' },
+    "center-left": { top: '50%', left: '16%', transform: 'translateY(-50%)' },
+    "center-right": { top: '50%', right: '16%', transform: 'translateY(-50%)' },
+    "bottom-left": { bottom: '16%', left: '16%' },
+    "bottom-right": { bottom: '16%', right: '16%' },
+    "center": { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' },
+  };
+  return map[pos] || {};
 };
 
 const Dice = ({ values, isRolling }) => {
+  const colors = ['#FF6B6B', '#4ECDC4'];
   return (
     <DiceContainer>
       {values.map((value, index) => (
-        <Die key={index} $isRolling={isRolling}>
-          {dotPositions[value]?.map(([x, y], i) => (
-            <Dot
-              key={i}
-              color={index === 0 ? 'FF6B6B' : '4ECDC4'}
-              style={{
-                left: `${x}%`,
-                top: `${y}%`,
-                transform: 'translate(-50%, -50%)'
-              }}
-            />
+        <Die
+          key={index}
+          color={colors[index % colors.length]}
+          $isRolling={isRolling}
+        >
+          {/* Render dots for dice face */}
+          {dotPositions[value - 1].map((positions, i) => (
+            positions.map((pos, j) => (
+              <Dot key={i + '-' + j} style={getDotStyle(pos)} />
+            ))
           ))}
         </Die>
       ))}
