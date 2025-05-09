@@ -2,10 +2,7 @@ import styled from 'styled-components';
 import { FaDice, FaHome } from 'react-icons/fa';
 
 const ControlsContainer = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-` ;
+
 
 const Button = styled.button`
   padding: 1rem 2rem;
