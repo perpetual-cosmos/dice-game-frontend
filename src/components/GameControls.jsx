@@ -8,9 +8,9 @@ const ControlsContainer = styled.div`
 `;
 
 const Button = styled.button`
-  padding: 1rem 2rem;
+  padding: 6rem 7rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1.1rem;
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
   display: flex;
