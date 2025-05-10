@@ -16,10 +16,27 @@ const StatItem = styled.div`
   opacity: 0.8;
 `;
 
-const PlayerCard = ({ player, isCurrentPlayer }) => {
+const PlayerCard = ({ player, isCurrentPlayer, localPlayerId }) => {
   return (
     <Card $isActive={isCurrentPlayer}>
-      <h3>{player.name}</h3>
+      <h3>
+        {player.name}
+        {player.code && player.code.trim() && (
+          <span style={{
+            fontSize: '0.9rem',
+            color: '#fff',
+            background: '#222',
+            borderRadius: '6px',
+            padding: '0.1rem 0.5rem',
+            marginLeft: '0.6rem',
+            fontWeight: 'bold',
+            letterSpacing: '1px',
+            display: 'inline-block',
+          }}>
+            {player.code}
+          </span>
+        )}
+      </h3>
       <div style={{ fontSize: '2rem', margin: '1rem 0' }}>
         {player.score} pts
       </div>
@@ -28,12 +45,18 @@ const PlayerCard = ({ player, isCurrentPlayer }) => {
           🎲 Rolls: {player.rollCount}
         </StatItem>
         <StatItem>
-           Doubles: {player.doublesCount}
+          ✨ Doubles: {player.doublesCount}
         </StatItem>
       </div>
-      {isCurrentPlayer && (
+      {/* Show turn status */}
+      {isCurrentPlayer && player.id === localPlayerId && (
         <div style={{ marginTop: '1rem', color: '#3498db' }}>
           Your turn!
+        </div>
+      )}
+      {isCurrentPlayer && player.id !== localPlayerId && (
+        <div style={{ marginTop: '1rem', color: '#e67e22' }}>
+          Waiting for opponent...
         </div>
       )}
     </Card>
