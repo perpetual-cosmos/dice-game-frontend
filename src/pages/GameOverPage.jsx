@@ -34,6 +34,33 @@ const Trophy = styled.div`
   filter: drop-shadow(0 0 10px rgba(255,215,0,0.5));
 `;
 
+const WinnerCode = styled.span`
+  font-size: 1.3rem;
+  color: #fff;
+  background: #222;
+  border-radius: 8px;
+  padding: 0.2rem 0.7rem;
+  margin-left: 0.7rem;
+  font-family: 'Quicksand', Arial, sans-serif;
+  font-weight: bold;
+  letter-spacing: 1px;
+`;
+
+const Stats = styled.div`
+  margin: 1.5rem 0 2rem 0;
+  font-size: 1.2rem;
+  color: #222;
+  width: 100%;
+  text-align: center;
+`;
+
+const Trophy = styled(GiTrophyCup)`
+  font-size: 7rem;
+  margin: 2rem 0 1rem 0;
+  color: #ffd700;
+  filter: drop-shadow(0 0 18px #ffb34788);
+`;
+
 const GameOverPage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
