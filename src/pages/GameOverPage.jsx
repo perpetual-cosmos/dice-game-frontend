@@ -1,15 +1,23 @@
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const ResultContainer = styled.div`
+const FrostedPanel = styled.div`
+  background: rgba(255,255,255,0.18);
+  border-radius: 22px;
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid rgba(255,255,255,0.22);
+  padding: 3rem 2.5rem 2.5rem 2.5rem;
+  margin: 2.5rem 0 1.5rem 0;
+  width: 100%;
+  max-width: 480px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 4rem;
-  min-height: 100vh;
-  background: linear-gradient(45deg, #485461 0%, #28313b 100%);
-  color: white;
+  z-index: 1;
 `;
+
 
 const Trophy = styled.div`
   font-size: 8rem;
