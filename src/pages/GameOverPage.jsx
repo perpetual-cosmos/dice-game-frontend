@@ -18,6 +18,15 @@ const FrostedPanel = styled.div`
   z-index: 1;
 `;
 
+const WinnerName = styled.h2`
+  font-size: clamp(2.2rem, 6vw, 3.2rem);
+  font-family: 'Luckiest Guy', 'Quicksand', cursive, sans-serif;
+  color: #ffb347;
+  margin: 1.2rem 0 0.5rem 0;
+  text-shadow: 2px 4px 12px #0006, 0 2px 0 #fff2;
+  letter-spacing: 2px;
+  text-align: center;
+`;
 
 const Trophy = styled.div`
   font-size: 8rem;
