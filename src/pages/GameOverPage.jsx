@@ -1,5 +1,33 @@
-import styled from 'styled-components';
-import { useLocation, useNavigate } from 'react-router-dom';
+import styled, { keyframes } from 'styled-components';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useContext } from 'react';
+import { SocketContext } from '../context/socket';
+import { GiTrophyCup } from 'react-icons/gi';
+
+const bgAnim = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+`;
+
+const ConfettiAnim = keyframes`
+  0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(600px) rotate(360deg); opacity: 0; }
+`;
+
+const BG = styled.div`
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(120deg, #f7971e 0%, #ffd200 50%, #43cea2 100%);
+  background-size: 200% 200%;
+  animation: ${bgAnim} 10s ease-in-out infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+`;
 
 const FrostedPanel = styled.div`
   background: rgba(255,255,255,0.18);
@@ -28,12 +56,6 @@ const WinnerName = styled.h2`
   text-align: center;
 `;
 
-const Trophy = styled.div`
-  font-size: 8rem;
-  margin: 2rem;
-  filter: drop-shadow(0 0 10px rgba(255,215,0,0.5));
-`;
-
 const WinnerCode = styled.span`
   font-size: 1.3rem;
   color: #fff;
@@ -60,6 +82,7 @@ const Trophy = styled(GiTrophyCup)`
   color: #ffd700;
   filter: drop-shadow(0 0 18px #ffb34788);
 `;
+
 const Button = styled.button`
   padding: 1.1rem 2.2rem;
   font-size: 1.2rem;
@@ -85,30 +108,82 @@ const Confetti = styled.div`
   pointer-events: none;
   z-index: 2;
 `;
+
+const ConfettiPiece = styled.div`
+  position: absolute;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  opacity: 0.8;
+  background: ${({ color }) => color};
+  left: ${({ left }) => left};
+  animation: ${ConfettiAnim} ${({ duration }) => duration}s linear;
+  animation-delay: ${({ delay }) => delay}s;
+`;
+
+function getRandomColor() {
+  const colors = ['#ffb347', '#43cea2', '#ffd200', '#8e44ad', '#4e54c8', '#f7971e', '#ff6b6b'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
 const GameOverPage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  
-  return (
-    <ResultContainer>
-      <h1>Game Over!</h1>
-      <Trophy>🏆</Trophy>
-      <h2>{state?.winner?.name || 'Unknown Player'} Wins!</h2>
-      
-      <div className="stats">
-        <p>Final Score: {state?.winner?.score || 0}</p>
-        <p>Total Rolls: {}</p>
-      </div>
+  const { roomId } = useParams();
+  const socket = useContext(SocketContext);
 
-      <div className="actions">
-        <button onClick={() => navigate('/game')}>
-          Play Again
-        </button>
-        <button onClick={() => navigate('/')}>
-          Main Menu
-        </button>
-      </div>
-    </ResultContainer>
+  useEffect(() => {
+    if (state?.winner) {
+      const stored = localStorage.getItem('latestWinners');
+      let winners = stored ? JSON.parse(stored) : [];
+      winners.unshift({ name: state.winner.name, id: state.winner.id, code: state.winner.code });
+      winners = winners.slice(0, 3);
+      localStorage.setItem('latestWinners', JSON.stringify(winners));
+    }
+  }, [state]);
+
+  const handlePlayAgain = () => {
+    if (roomId) {
+      socket.emit('reset-game', roomId);
+      navigate(`/game/${roomId}`);
+    } else {
+      navigate('/game');
+    }
+  };
+
+  // Confetti pieces
+  const confetti = Array.from({ length: 24 }).map((_, i) => (
+    <ConfettiPiece
+      key={i}
+      color={getRandomColor()}
+      left={`${Math.random() * 100}vw`}
+      duration={1.8 + Math.random() * 1.2}
+      delay={Math.random() * 0.7}
+      style={{ top: `${-30 - Math.random() * 60}px` }}
+    />
+  ));
+
+  return (
+    <BG>
+      <Confetti>{confetti}</Confetti>
+      <FrostedPanel>
+        <Trophy />
+        <WinnerName>
+          {state?.winner?.name || 'Unknown Player'}
+          {state?.winner?.code && state?.winner?.code.trim() && (
+            <WinnerCode>{state?.winner?.code}</WinnerCode>
+          )}
+          <div style={{ fontSize: '1.2rem', color: '#888', marginTop: '0.5rem' }}>Wins!</div>
+        </WinnerName>
+        <Stats>
+          <p>Final Score: <b>{state?.winner?.score || 0}</b></p>
+          <p>Total Rolls: {/* Add roll count from state */}</p>
+        </Stats>
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+          <Button onClick={handlePlayAgain}>Play Again</Button>
+          <Button onClick={() => navigate('/')}>Main Menu</Button>
+        </div>
+      </FrostedPanel>
+    </BG>
   );
 };
 
