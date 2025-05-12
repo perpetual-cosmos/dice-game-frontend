@@ -60,7 +60,31 @@ const Trophy = styled(GiTrophyCup)`
   color: #ffd700;
   filter: drop-shadow(0 0 18px #ffb34788);
 `;
+const Button = styled.button`
+  padding: 1.1rem 2.2rem;
+  font-size: 1.2rem;
+  background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 4px 18px 0 #0002, 0 1.5px 4px #0001;
+  margin: 0.7rem 0.7rem 0 0;
+  transition: all 0.2s cubic-bezier(.4,2,.6,1);
+  &:hover {
+    background: linear-gradient(90deg, #185a9d 0%, #43cea2 100%);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 8px 32px 0 #0003;
+  }
+`;
 
+const Confetti = styled.div`
+  position: absolute;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 2;
+`;
 const GameOverPage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
