@@ -6,6 +6,37 @@ import PlayerCard from '../components/PlayerCard';
 import GameControls from '../components/GameControls';
 import { SocketContext } from '../context/socket';
 
+
+const bgAnim = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+`;
+
+
+
+const FloatingDice = styled(GiPerspectiveDiceSixFacesRandom)`
+  position: absolute;
+  opacity: 0.07;
+  font-size: 8rem;
+  pointer-events: none;
+  z-index: 0;
+`;
+
+const MainGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 2.5fr 1fr;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 2.5rem;
+  z-index: 1;
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    gap: 1.5rem;
+  }
+`;
 const GameLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
