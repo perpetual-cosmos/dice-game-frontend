@@ -73,6 +73,23 @@ const AnimatedPlayerCard = styled.div`
   `}
 `;
 
+const CopyBtn = styled.button`
+  background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.2rem 0.8rem;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  &:hover {
+    background: linear-gradient(90deg, #185a9d 0%, #43cea2 100%);
+    transform: scale(1.07);
+  }
+`;
+
 const GameLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
