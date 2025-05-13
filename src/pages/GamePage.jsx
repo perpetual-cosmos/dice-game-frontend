@@ -37,6 +37,42 @@ const MainGrid = styled.div`
     gap: 1.5rem;
   }
 `;
+
+const FrostedPanel = styled.div`
+  background: rgba(255,255,255,0.13);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255,255,255,0.18);
+  padding: 2rem 1.2rem;
+  margin-bottom: 1.5rem;
+  z-index: 1;
+`;
+
+const DiceArea = styled(FrostedPanel)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+  margin: 0 auto 1.5rem auto;
+  width: 100%;
+  max-width: 420px;
+  border: 2.5px solid #4e54c8;
+  box-shadow: 0 4px 24px #4e54c822;
+`;
+
+
+const AnimatedPlayerCard = styled.div`
+  transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
+  ${({ active }) => active && css`
+    transform: scale(1.06) translateY(-8px);
+    box-shadow: 0 8px 32px 0 #ffb34755, 0 1.5px 4px #0001;
+    border: 2.5px solid #ffb347;
+  `}
+`;
+
 const GameLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
@@ -96,22 +132,63 @@ const GamePage = () => {
 
   return (
     <GameLayout>
-      {gameState.players.map((player) => (
-        <PlayerCard
-          key={player.id}
-          player={player}
-          isCurrentPlayer={player.id === gameState.currentPlayer}
-        />
-      ))}
-
-      <div className="game-area">
-        <Dice values={gameState.diceValues} isRolling={isRolling} />
-        <GameControls
-          onRoll={handleRoll}
-          isRolling={isRolling}
-          disabled={!isCurrentPlayer}
-        />
-      </div>
+      {/* Floating dice for background effect */}
+      <FloatingDice style={{ top: '8%', left: '4%' }} />
+      <FloatingDice style={{ top: '70%', left: '80%', fontSize: '6rem' }} />
+      <FloatingDice style={{ top: '50%', left: '60%', fontSize: '10rem' }} />
+      {modal && (
+        <Modal>
+          <ModalContent>
+            <h2>{modal}</h2>
+            <p>You will be redirected to the home page.</p>
+          </ModalContent>
+        </Modal>
+      )}
+      {roomId && (
+        <RoomIdBadge>
+          Room Id: <b style={{ letterSpacing: '1px', fontSize: '1.13rem' }}>{roomId}</b>
+          <CopyBtn onClick={handleCopyRoomId}>Copy</CopyBtn>
+          {copyMsg && <span style={{ color: '#2ecc71', marginLeft: '0.5rem', fontSize: '0.98rem' }}>{copyMsg}</span>}
+        </RoomIdBadge>
+      )}
+      <MainGrid>
+        <div>
+          {gameState.players.map((player) => (
+            <AnimatedPlayerCard key={player.id} active={player.id === gameState.currentPlayer}>
+              <PlayerCard
+                player={player}
+                isCurrentPlayer={player.id === gameState.currentPlayer}
+                localPlayerId={socket.id}
+              />
+            </AnimatedPlayerCard>
+          ))}
+        </div>
+        <DiceArea>
+          <Dice values={displayDiceValues} isRolling={isRolling} />
+          {/* Show message if only one player */}
+          {gameState.players.length < 2 && (
+            <div style={{
+              color: '#fff',
+              background: '#e67e22',
+              padding: '1rem',
+              borderRadius: '8px',
+              margin: '1rem 0',
+              textAlign: 'center',
+              fontWeight: 'bold',
+              fontSize: '1.2rem',
+              boxShadow: '0 2px 8px #0002',
+            }}>
+              🕹️ You are alone here! Call one more player to start the game.
+            </div>
+          )}
+          <GameControls
+            onRoll={handleRoll}
+            isRolling={isRolling}
+            disabled={!isCurrentPlayer || gameState.players.length < 2}
+          />
+        </DiceArea>
+        <div />
+      </MainGrid>
     </GameLayout>
   );
 };
