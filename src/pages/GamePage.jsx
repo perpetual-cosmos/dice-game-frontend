@@ -73,6 +73,27 @@ const AnimatedPlayerCard = styled.div`
   `}
 `;
 
+const Modal = styled.div`
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(44, 62, 80, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background: #fff;
+  color: #222;
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 #4e54c822;
+  text-align: center;
+  max-width: 90vw;
+  font-family: 'Quicksand', 'Segoe UI', Arial, sans-serif;
+`;
+
 const CopyBtn = styled.button`
   background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
   color: #fff;
