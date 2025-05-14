@@ -1,11 +1,11 @@
 import { useContext, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import Dice from '../components/Dice';
 import PlayerCard from '../components/PlayerCard';
 import GameControls from '../components/GameControls';
 import { SocketContext } from '../context/socket';
-
+import { GiPerspectiveDiceSixFacesRandom } from 'react-icons/gi';
 
 const bgAnim = keyframes`
   0% { background-position: 0% 50%; }
@@ -13,7 +13,18 @@ const bgAnim = keyframes`
   100% { background-position: 0% 50%; }
 `;
 
-
+const GameLayout = styled.div`
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(120deg, #232526 0%, #414345 50%, #6dd5ed 100%);
+  background-size: 200% 200%;
+  animation: ${bgAnim} 14s ease-in-out infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 0 2rem 0;
+  overflow-x: hidden;
+`;
 
 const FloatingDice = styled(GiPerspectiveDiceSixFacesRandom)`
   position: absolute;
@@ -63,7 +74,6 @@ const DiceArea = styled(FrostedPanel)`
   box-shadow: 0 4px 24px #4e54c822;
 `;
 
-
 const AnimatedPlayerCard = styled.div`
   transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
   ${({ active }) => active && css`
@@ -73,7 +83,43 @@ const AnimatedPlayerCard = styled.div`
   `}
 `;
 
+const Modal = styled.div`
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(44, 62, 80, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+const ModalContent = styled.div`
+  background: #fff;
+  color: #222;
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 #4e54c822;
+  text-align: center;
+  max-width: 90vw;
+  font-family: 'Quicksand', 'Segoe UI', Arial, sans-serif;
+`;
 
+const RoomIdBadge = styled.div`
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  background: rgba(44,62,80,0.92);
+  color: #fff;
+  font-size: 1.1rem;
+  font-family: 'Quicksand', Arial, sans-serif;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px #0002;
+  padding: 0.7rem 1.2rem 0.7rem 1.2rem;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  user-select: all;
+`;
 const CopyBtn = styled.button`
   background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
   color: #fff;
@@ -91,20 +137,6 @@ const CopyBtn = styled.button`
   }
 `;
 
-const GameLayout = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  gap: 2rem;
-  padding: 2rem;
-  min-height: 100vh;
-  background: #2c3e50;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
-  }
-`;
-
 const GamePage = () => {
   const { roomId } = useParams();
   const navigate = useNavigate();
@@ -115,6 +147,19 @@ const GamePage = () => {
     diceValues: [1, 1],
     currentPlayer: null
   });
+  const [displayDiceValues, setDisplayDiceValues] = useState([1, 1]);
+  const [modal, setModal] = useState(null);
+  const [copyMsg, setCopyMsg] = useState('');
+
+  const handleCopyRoomId = () => {
+    navigator.clipboard.writeText(roomId || '').then(() => {
+      setCopyMsg('Copied!');
+      setTimeout(() => setCopyMsg(''), 2000);
+    }).catch(() => {
+      setCopyMsg('Failed to copy.');
+      setTimeout(() => setCopyMsg(''), 2000);
+    });
+  };
 
   useEffect(() => {
     const playerName = localStorage.getItem('playerName') || 'Player';
@@ -125,27 +170,57 @@ const GamePage = () => {
     });
 
     socket.on('game-state', (state) => {
+      // Sort players to maintain consistent order
       const sortedPlayers = [...state.players].sort((a, b) => a.id.localeCompare(b.id));
       setGameState({ ...state, players: sortedPlayers });
+      // If not rolling, update displayDiceValues to real values
+      setDisplayDiceValues(state.diceValues);
     });
 
     socket.on('game-over', (winner) => {
       navigate('/game-over', { state: { winner } });
     });
 
+    socket.on('room-ended', (msg) => {
+      setModal(msg || 'Room has ended.');
+      setTimeout(() => navigate('/'), 3000);
+    });
+    socket.on('join-error', (msg) => {
+      setModal(msg || 'Could not join room.');
+      setTimeout(() => navigate('/'), 3000);
+    });
+    socket.on('disconnect', () => {
+      setModal('Disconnected from server. Please check your connection.');
+    });
+
     return () => {
       socket.off('game-state');
       socket.off('game-over');
+      socket.off('room-ended');
+      socket.off('join-error');
+      socket.off('disconnect');
     };
   }, [socket, roomId, navigate]);
 
   const handleRoll = () => {
     if (!isCurrentPlayer || isRolling) return;
     setIsRolling(true);
+    // Start rolling animation: show random dice faces
+    let rollInterval = setInterval(() => {
+      setDisplayDiceValues([
+        Math.floor(Math.random() * 6) + 1,
+        Math.floor(Math.random() * 6) + 1
+      ]);
+    }, 100);
     socket.emit('roll-dice', roomId || 'default');
-    setTimeout(() => setIsRolling(false), 1000);
+    setTimeout(() => {
+      setIsRolling(false);
+      clearInterval(rollInterval);
+      // The real dice values will be set by the game-state event
+    }, 1200);
   };
 
+  // True only for the active player's client
   const isCurrentPlayer = socket.id === gameState.currentPlayer;
 
   return (
