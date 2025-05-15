@@ -83,11 +83,29 @@ const Button = styled.button`
 `;
 
 const RulesList = styled.ul`
-  background: rgba(255,255,255,0.1);
-  padding: 2rem;
-  border-radius: 12px;
+  background: rgba(255,255,255,0.13);
+  padding: 2rem 1.5rem;
+  border-radius: 16px;
   margin: 2rem 0;
   max-width: 600px;
+  width: 100%;
+  font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+  box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+  z-index: 1;
+`;
+
+const RoomCard = styled.div`
+  margin: 1rem 0;
+  color: #fff;
+  background: #34495e;
+  padding: 1.2rem 1rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.15);
 `;
 
 const HomePage = () => {
