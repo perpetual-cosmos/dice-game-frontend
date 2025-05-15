@@ -108,6 +108,38 @@ const RoomCard = styled.div`
   box-shadow: 0 2px 8px rgba(44,62,80,0.15);
 `;
 
+const InputRow = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 350px;
+  margin: 1rem 0;
+  gap: 0.5rem;
+  @media (min-width: 600px) {
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+`;
+
+const Input = styled.input`
+  padding: 0.9rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1.1rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 2px 8px #0001;
+  background: rgba(255,255,255,0.7);
+  color: #222;
+  @media (min-width: 600px) {
+    margin-bottom: 0;
+    width: auto;
+    min-width: 180px;
+  }
+`;
+
 const HomePage = () => {
   const navigate = useNavigate();
 
