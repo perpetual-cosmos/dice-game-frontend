@@ -35,24 +35,50 @@ const FloatingDice = styled(GiPerspectiveDiceSixFacesRandom)`
 `;
 
 const Title = styled.h1`
-  font-size: 3rem;
+  font-family: 'Luckiest Guy', 'Quicksand', cursive, sans-serif;
+  font-size: clamp(2.5rem, 7vw, 4rem);
   margin-bottom: 2rem;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 2px 4px 12px #0008, 0 2px 0 #fff2;
+  letter-spacing: 2px;
+  text-align: center;
+  z-index: 1;
+`;
+
+const GlassCard = styled.div`
+  background: rgba(255,255,255,0.13);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255,255,255,0.18);
+  padding: 2.5rem 2rem 2rem 2rem;
+  margin: 2rem 0 1.5rem 0;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
 `;
 
 const Button = styled.button`
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  background: #4CAF50;
+  padding: 1.1rem 2.2rem;
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+  color: #222;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin: 1rem;
-  
+  font-weight: bold;
+  box-shadow: 0 4px 18px 0 #0002, 0 1.5px 4px #0001;
+  margin: 0.7rem 0;
+  width: 100%;
+  max-width: 350px;
+  transition: all 0.2s cubic-bezier(.4,2,.6,1);
   &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    background: linear-gradient(90deg, #ffcc33 0%, #ffb347 100%);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 8px 32px 0 #0003;
   }
 `;
 
