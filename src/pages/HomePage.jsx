@@ -1,14 +1,37 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useNavigate } from 'react-router';
+import { useState, useContext } from 'react';
+import { SocketContext } from '../context/socket';
+import { GiPerspectiveDiceSixFacesRandom } from 'react-icons/gi';
+
+const bgAnim = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+`;
+
 
 const Container = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  padding: 2vw 4vw;
   min-height: 100vh;
   color: white;
+  font-family: 'Quicksand', 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(120deg, #1e3c72 0%, #2a5298 50%, #6dd5ed 100%);
+  background-size: 200% 200%;
+  animation: ${bgAnim} 12s ease-in-out infinite;
+  overflow-x: hidden;
+`;
+
+const FloatingDice = styled(GiPerspectiveDiceSixFacesRandom)`
+  position: absolute;
+  opacity: 0.08;
+  font-size: 8rem;
+  pointer-events: none;
+  z-index: 0;
 `;
 
 const Title = styled.h1`
