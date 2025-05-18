@@ -8,6 +8,14 @@ const bgAnim = keyframes`
   100% { background-position: 0% 50%; }
 `;
 
+
+const Medal = styled(FaMedal)`
+  font-size: 2rem;
+  margin-right: 1.2rem;
+  color: ${({ idx }) => idx === 0 ? '#ffd700' : idx === 1 ? '#c0c0c0' : idx === 2 ? '#cd7f32' : '#888'};
+  filter: drop-shadow(0 0 6px #fff8);
+`;
+
 const WinnerName = styled.span`
   font-size: 1.2rem;
   color: #222;
