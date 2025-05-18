@@ -1,0 +1,51 @@
+import React, { useEffect, useState } from 'react';
+import styled, { keyframes } from 'styled-components';
+import { FaMedal } from 'react-icons/fa';
+
+const bgAnim = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+`;
+
+const WinnerName = styled.span`
+  font-size: 1.2rem;
+  color: #222;
+  font-family: 'Quicksand', Arial, sans-serif;
+`;
+
+const LeaderboardPage = () => {
+  const [winners, setWinners] = useState([]);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('latestWinners');
+    if (stored) {
+      setWinners(JSON.parse(stored));
+    }
+  }, []);
+
+  return (
+    <BG>
+      <FrostedPanel>
+        <Title>Latest Winners</Title>
+        <WinnerList>
+          {winners.length === 0 && <WinnerItem>No winners yet.</WinnerItem>}
+          {winners.map((winner, idx) => (
+            <WinnerItem key={idx} idx={idx}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Medal idx={idx} />
+                <WinnerName>{winner.name || 'Unknown'}</WinnerName>
+                {winner.code && winner.code.trim() && (
+                  <WinnerCode>{winner.code}</WinnerCode>
+                )}
+              </div>
+              <WinnerId>ID: {winner.id}</WinnerId>
+            </WinnerItem>
+          ))}
+        </WinnerList>
+      </FrostedPanel>
+    </BG>
+  );
+};
+
+export default LeaderboardPage; 
