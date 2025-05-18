@@ -9,6 +9,25 @@ const bgAnim = keyframes`
 `;
 
 
+
+
+
+
+
+const WinnerItem = styled.li`
+  font-size: 1.2rem;
+  margin: 1.2rem 0;
+  padding: 1.2rem 1rem 1.2rem 1.5rem;
+  border-radius: 12px;
+  background: ${({ idx }) => idx === 0 ? 'rgba(255, 215, 0, 0.18)' : idx === 1 ? 'rgba(192,192,192,0.18)' : idx === 2 ? 'rgba(205,127,50,0.18)' : 'rgba(52, 152, 219, 0.15)'};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px #0001;
+  font-weight: ${({ idx }) => idx === 0 ? 'bold' : 'normal'};
+  position: relative;
+`;
+
 const Medal = styled(FaMedal)`
   font-size: 2rem;
   margin-right: 1.2rem;
