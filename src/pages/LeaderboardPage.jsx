@@ -14,6 +14,21 @@ const WinnerName = styled.span`
   font-family: 'Quicksand', Arial, sans-serif;
 `;
 
+const WinnerCode = styled.span`
+  font-size: 1.1rem;
+  color: #34495e;
+  background: #fff6;
+  border-radius: 8px;
+  padding: 0.2rem 0.7rem;
+  margin-left: 0.7rem;
+`;
+
+const WinnerId = styled.span`
+  font-size: 1rem;
+  color: #888;
+  margin-left: 1.2rem;
+`;
+
 const LeaderboardPage = () => {
   const [winners, setWinners] = useState([]);
 
