@@ -24,12 +24,6 @@ const BG = styled.div`
 
 const FrostedPanel = styled.div`
   background: rgba(255,255,255,0.18);
-  border-radius: 22px;
-  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 2px solid rgba(255,255,255,0.22);
-  padding: 2.5rem 2rem 2rem 2rem;
   margin: 2.5rem 0 1.5rem 0;
   width: 100%;
   max-width: 480px;
