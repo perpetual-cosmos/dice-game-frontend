@@ -22,16 +22,6 @@ const BG = styled.div`
   overflow-x: hidden;
 `;
 
-const FrostedPanel = styled.div`
-  background: rgba(255,255,255,0.18);
-  margin: 2.5rem 0 1.5rem 0;
-  width: 100%;
-  max-width: 480px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 1;
-`;
 
 const Title = styled.h1`
   font-size: clamp(2.2rem, 6vw, 3.2rem);
