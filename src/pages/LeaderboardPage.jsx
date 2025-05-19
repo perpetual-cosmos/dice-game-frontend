@@ -8,11 +8,53 @@ const bgAnim = keyframes`
   100% { background-position: 0% 50%; }
 `;
 
+const BG = styled.div`
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(120deg, #43cea2 0%, #185a9d 50%, #f7971e 100%);
+  background-size: 200% 200%;
+  animation: ${bgAnim} 12s ease-in-out infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 4vw;
+  overflow-x: hidden;
+`;
 
+const FrostedPanel = styled.div`
+  background: rgba(255,255,255,0.18);
+  border-radius: 22px;
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid rgba(255,255,255,0.22);
+  padding: 2.5rem 2rem 2rem 2rem;
+  margin: 2.5rem 0 1.5rem 0;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+`;
 
+const Title = styled.h1`
+  font-size: clamp(2.2rem, 6vw, 3.2rem);
+  font-family: 'Luckiest Guy', 'Quicksand', cursive, sans-serif;
+  color: #ffd200;
+  margin-bottom: 2rem;
+  text-shadow: 2px 4px 12px #0006, 0 2px 0 #fff2;
+  letter-spacing: 2px;
+  text-align: center;
+`;
 
-
-
+const WinnerList = styled.ul`
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+`;
 
 const WinnerItem = styled.li`
   font-size: 1.2rem;
